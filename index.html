@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ангелина</title>
+    
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            background-color: #000000; /* Цвет фона (черный или белый, под цвет макета) */
+        }
+
+        /* Контейнер для картинок */
+        .landing-container {
+            width: 100%;
+            max-width: 100%;
+            display: flex;
+            flex-direction: column; /* Выстраиваем в колонку */
+        }
+
+        .landing-image {
+            display: block; /* ОЧЕНЬ ВАЖНО: убирает белые полосы между кусками картинок!! */
+            width: 100%;
+            height: auto;
+            margin: 0;
+            padding: 0;
+            border: none;
+        }
+
+        /* ── Slice1 wrapper для бейджа поверх ── */
+        .slice1-wrapper {
+            position: relative;
+            display: block;
+            line-height: 0;
+        }
+
+        .badge {
+            position: absolute;
+            /* Позиция как в Figma: левая часть, ~9% от левого края, ~-2% сверху */
+            left: 9%;
+            top: -2%;
+            width: 28%;          /* ~435px при 1280px ширине страницы */
+            height: auto;
+            transform-origin: top center;
+            animation: swing 3.2s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        @keyframes swing {
+            0%   { transform: rotate(-8deg); }
+            50%  { transform: rotate(8deg);  }
+            100% { transform: rotate(-8deg); }
+        }
+
+        /* ── Navigation ── */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 4px 6px;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.99);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+            justify-content: flex-end;
+        }
+
+        nav a {
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: #333;
+            text-decoration: none;
+            padding: 6px 12px;
+            border-radius: 20px;
+            transition: background 0.2s, color 0.2s;
+            white-space: nowrap;
+        }
+
+        nav a:hover {
+            background: #ff76c2;
+            color: #fff;
+        }
+
+        @media (max-width: 600px) {
+            nav a {
+                font-size: 11px;
+                padding: 5px 9px;
+            }
+        }
+
+        /* Отступ сверху чтобы nav не перекрывал начало страницы */
+        body {
+            padding-top: 0;
+        }
+    </style>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <nav>
+        <a href="#s1">Главная</a>
+        <a href="#s2">Волонтерство</a>
+        <a href="#s3">Buddy&nbsp;System</a>
+        <a href="#s4">Наука</a>
+        <a href="#s5">Творчество</a>
+    </nav>
+
+    <div class="landing-container">
+        <!-- Slice 1 — герой + бейдж -->
+        <div id="s1" class="slice1-wrapper">
+            <img src="Slice1.jpg" alt="Слайс 1" class="landing-image">
+            <img src="badge.png"  alt="Бейдж" class="badge">
+        </div>
+
+        <div id="s2"><img src="Slice2.jpg" alt="Волонтёрство"  class="landing-image" loading="lazy"></div>
+        <div id="s3"><img src="Slice3.jpg" alt="Buddy System"  class="landing-image" loading="lazy"></div>
+        <div id="s4"><img src="Slice4.jpg" alt="Наука"         class="landing-image" loading="lazy"></div>
+        <div id="s5"><img src="Slice5.jpg" alt="КВН"           class="landing-image" loading="lazy"></div>
+        <div id="s6"><img src="Slice6.jpg" alt="Финал"         class="landing-image" loading="lazy"></div>
+    </div>
+
+    <script>
+        // Плавный скролл с учётом высоты nav
+        document.querySelectorAll('nav a[href^="#"]').forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                const target = document.querySelector(link.getAttribute('href'));
+                if (!target) return;
+                const navH = document.querySelector('nav').offsetHeight;
+                const top = target.getBoundingClientRect().top + window.scrollY - navH;
+                window.scrollTo({ top, behavior: 'smooth' });
+            });
+        });
+
+        // Динамически выставляем padding-top = высота nav
+        function updatePadding() {
+            document.body.style.paddingTop = document.querySelector('nav').offsetHeight + 'px';
+        }
+        updatePadding();
+        window.addEventListener('resize', updatePadding);
+    </script>
+
+</body>
+</html>
